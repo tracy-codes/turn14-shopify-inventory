@@ -12,3 +12,6 @@ Simply run the following command:
 ```python
 pip install -r requirements.txt
 ```
+
+## Turn14 Credentials
+Please be sure to update turn14_creds.json where **`"username": "username",`** to your username and **`"password": "password"`** to your password.
