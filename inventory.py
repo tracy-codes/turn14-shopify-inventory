@@ -1,6 +1,6 @@
 import shopify
 import csv
-import MySQLdb
+#import MySQLdb
 import sys
 import time
 import requests
@@ -8,38 +8,57 @@ from zipfile import ZipFile
 import glob
 import os
 from os.path import join
+import json
 
+# shopify credentials
+shopify_creds = json.load(open('shopify_creds.json'))
+SHOP_NAME = shopify_creds['shop_name']
+API_KEY = shopify_creds['api_key']
+API_PASS = shopify_creds['api_pass']
+
+# sets shop url
+shop_url = "https://%s:%s@%s.myshopify.com/admin" % (API_KEY, API_PASS, SHOP_NAME)
+shopify.ShopifyResource.set_site(shop_url)
+shop = shopify.Shop.current()
+
+print shop.name
+
+# your db information
+conn = MySQLdb.connect("localhost","root","cookies","test")
+c = conn.cursor()
+c.execute("SELECT * FROM inv")
+rows = c.fetchall()
+
+# downloads inventory spreadsheet from turn14.com
 def download_file():
+    # initiates requests session
     s = requests.session()
-    login_data = {'password':'rumblebros', 'username':'rumblebros'}
+    # turn14 credentials
+    data = json.load(open('turn14_creds.json'))
+    username = data['username']
+    password = data['password']
+    login_data = {'password':password, 'username':username}
+    # posts login to turn14.com
     s.post('https://www.turn14.com/user/login', data=login_data)
+    # url for inventory update csv
     zipurl = 'https://www.turn14.com/export.php?action=inventory_feed'
+    # downloads zip file as inventory.zip
     resp = s.get(zipurl)
     zname = 'inventory.zip'
     zfile = open(zname, 'wb')
     zfile.write(resp.content)
     zfile.close()
+    # unzips file
+    unzip_file()
 
+# unzips file
 def unzip_file():
+    print "Unzipping inventory.zip"
     zip = ZipFile('inventory.zip')
     zip.extractall()
 
-
-# sys.setdefaultencoding() does not exist, here!
 reload(sys)  # Reload does the trick!
 sys.setdefaultencoding('UTF8')
-
-shop_url = "https://%s:%s@rumblebros.myshopify.com/admin" % ("c9acdeda24dce98f7c0832bec66cfa86", "c4fe01abe7a8265d29aa38f25caa70ee")
-shopify.ShopifyResource.set_site(shop_url)
-shop = shopify.Shop.current()
-
-conn = MySQLdb.connect("localhost","root","cookies","test")
-
-c = conn.cursor()
-
-c.execute("SELECT * FROM inv")
-
-rows = c.fetchall()
 
 def update_inventories():
     list_of_files = glob.glob('*.csv') # * means all if need specific format then *.csv
