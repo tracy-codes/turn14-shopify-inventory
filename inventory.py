@@ -10,11 +10,13 @@ import os
 from os.path import join
 import json
 
+# load config file
+config = json.load(open("config.json"))
+
 # shopify credentials
-shopify_creds = json.load(open('shopify_creds.json'))
-SHOP_NAME = shopify_creds['shop_name']
-API_KEY = shopify_creds['api_key']
-API_PASS = shopify_creds['api_pass']
+SHOP_NAME = config['shopify'][0]['shop_name']
+API_KEY = config['shopify'][0]['api_key']
+API_PASS = config['shopify'][0]['api_pass']
 
 # sets shop url
 shop_url = "https://%s:%s@%s.myshopify.com/admin" % (API_KEY, API_PASS, SHOP_NAME)
@@ -22,20 +24,25 @@ shopify.ShopifyResource.set_site(shop_url)
 shop = shopify.Shop.current()
 
 # your db information
-conn = MySQLdb.connect("localhost","root","cookies","test")
+db_host = config['database'][0]['host']
+db_username = config['database'][0]['username']
+db_password = config['database'][0]['password']
+db_schema = config['database'][0]['schema']
+conn = MySQLdb.connect(db_host, db_username, db_password, db_schema)
 c = conn.cursor()
 c.execute("SELECT * FROM inv")
 rows = c.fetchall()
+
+# turn14 credentials
+t14_username = config['turn14'][0]['username']
+t14_password = config['turn14'][0]['password']
 
 # downloads inventory spreadsheet from turn14.com
 def download_file():
     # initiates requests session
     s = requests.session()
-    # turn14 credentials
-    data = json.load(open('turn14_creds.json'))
-    username = data['username']
-    password = data['password']
-    login_data = {'password':password, 'username':username}
+    # set login data
+    login_data = {'password':t14_password, 'username':t14_username}
     # posts login to turn14.com
     s.post('https://www.turn14.com/user/login', data=login_data)
     # url for inventory update csv
