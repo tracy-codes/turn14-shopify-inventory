@@ -1,0 +1,14 @@
+# Turn14 Shopify Inventory
+This is a script to update your Shopify Inventory with Turn14.com's inventory every hour (the time interval they use to update their inventory spreadsheet).  
+
+I made this before Turn14.com released their REST API, but I feel this is still useful to those who do not have experience with APIs.
+
+## Dependencies
+__Please note that this uses MySQL, but you can use whatever db you are comfortable with__
+1. Shopify
+1. MySQL-python  
+### Installing Dependencies
+Simply run the following command:
+```python
+pip install -r requirements.txt
+```
