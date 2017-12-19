@@ -1,0 +1,23 @@
+{
+    "turn14": [
+        {
+            "username": "your user name",
+            "password": "your password"
+        }
+    ],
+    "shopify": [
+        {
+            "shop_name": "your shop name",
+            "api_key": "your api key",
+            "api_pass": "your api password"
+        }
+    ],
+    "database": [
+        {
+            "server": "your server",
+            "username": "your username",
+            "password": "your password",
+            "table": "your schema"
+        }
+    ]
+}
