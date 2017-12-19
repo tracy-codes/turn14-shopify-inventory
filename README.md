@@ -17,7 +17,7 @@ pip install -r requirements.txt
 Please be sure to update turn14_creds.json where **`"username": "username"`** to your username and **`"password": "password"`** to your password.
 
 ## Shopify API
-**More information on the Shopify Python API can be found here: [http://shopify.github.io/shopify_python_api/](Shopify Python API)**
+**More information on the Shopify Python API can be found here: [Shopify Python API](http://shopify.github.io/shopify_python_api/)**
 - You will need to create a private app in your dashboard
   - Follow this tutorial: [Generate private API credentials](https://help.shopify.com/api/getting-started/api-credentials#generate-private-api-credentials)
   - You will need to assign Read and Write access to "read_products, write_products" in your admin dashboard
