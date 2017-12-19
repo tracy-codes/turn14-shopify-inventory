@@ -4,8 +4,8 @@ This is a script to update your Shopify Inventory with Turn14.com's inventory ev
 I made this before Turn14.com released their REST API, but I feel this is still useful to those who do not have experience with APIs.
 
 ## Dependencies
-__Please note that this uses MySQL, but you can use whatever db you are comfortable with__
-1. Shopify
+__Please note that this uses MySQL, make sure you have that installed before installing dependencies but you can use whatever db you are comfortable with__
+1. Shopify __Use `pip install ShopifyAPI` if you aren't using MySQL__
 1. MySQL-python  
 ### Installing Dependencies
 Simply run the following command:
